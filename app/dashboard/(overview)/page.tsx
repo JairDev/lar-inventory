@@ -16,7 +16,7 @@ import {
 } from "@/app/ui/skeletons";
 import Search from "@/app/ui/search";
 import Pagination from "@/app/ui/invoices/pagination";
-import { CreateProduct } from "@/app/ui/invoices/buttons";
+import { CreateProduct, UpdateProduct } from "@/app/ui/invoices/buttons";
 
 // ¿Qué es el renderizado estático?
 // Con la representación estática, la obtención y representación de datos se produce
@@ -147,12 +147,7 @@ export default async function Page({
                   {((item.buy_price_dollar * 38000) / item.quantity) * 0.2}
                 </td>
                 <td className="text-right px-6 whitespace-nowrap">
-                  <a
-                    href="javascript:void()"
-                    className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
-                  >
-                    Edit
-                  </a>
+                  <UpdateProduct id={item.id} />
                   <button className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
                     Delete
                   </button>

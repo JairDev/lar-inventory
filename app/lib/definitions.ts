@@ -104,3 +104,11 @@ export type ProductField = {
   quantity: number;
   revenue: number;
 };
+
+export type ProductForm = {
+  id: string;
+  name: string;
+  buy_price_dollar: number;
+  quantity: number;
+  revenue: number;
+};

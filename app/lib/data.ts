@@ -8,6 +8,7 @@ import {
   User,
   Revenue,
   ProductsTable,
+  ProductForm,
 } from "./definitions";
 import { formatCurrency } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
@@ -151,6 +152,32 @@ export async function fetchFilteredProducts(query: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch invoices.");
+  }
+}
+
+export async function fetchProductById(id: string) {
+  noStore();
+  try {
+    const data = await sql<ProductForm>`
+      SELECT
+        products.id,
+        products.name,
+        products.buy_price_dollar,
+        products.quantity,
+        products.revenue
+      FROM products
+      WHERE products.id = ${id};
+    `;
+
+    // const invoice = data.rows.map((invoice) => ({
+    //   ...invoice,
+    //   // Convert amount from cents to dollars
+    //   amount: invoice.amount / 100,
+    // }));
+    console.log(data);
+    return data.rows[0];
+  } catch (error) {
+    console.error("Database Error:", error);
   }
 }
 
