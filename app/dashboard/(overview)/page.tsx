@@ -136,13 +136,15 @@ export default async function Page({
                   {item.buy_price_dollar}
                 </td>
                 <td className="pr-6 py-4 whitespace-nowrap">
-                  {item.buy_price_bs}
+                  {item.buy_price_dollar * 38000}
                 </td>
                 <td className="pr-6 py-4 whitespace-nowrap">{item.quantity}</td>
-                <td className="pr-6 py-4 whitespace-nowrap">{item.pvp}</td>
+                <td className="pr-6 py-4 whitespace-nowrap">
+                  {(item.buy_price_dollar * 38000) / item.quantity}
+                </td>
                 <td className="pr-6 py-4 whitespace-nowrap">{item.revenue}</td>
                 <td className="pr-6 py-4 whitespace-nowrap">
-                  {item.sell_price}
+                  {((item.buy_price_dollar * 38000) / item.quantity) * 0.2}
                 </td>
                 <td className="text-right px-6 whitespace-nowrap">
                   <a

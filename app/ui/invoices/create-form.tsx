@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomerField } from "@/app/lib/definitions";
+import { CustomerField, ProductField } from "@/app/lib/definitions";
 import Link from "next/link";
 import {
   CheckIcon,
@@ -9,7 +9,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "../button";
-import { createInvoice } from "@/app/lib/actions";
+import { createInvoice, createProduct } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
 
 // export default function Form({ customers }: { customers: CustomerField[] }) {
@@ -164,37 +164,36 @@ import { useFormState } from "react-dom";
 //   );
 // }
 
-export default function Form({ customers }: { customers: CustomerField[] }) {
+export default function Form() {
   const initialState = { message: null, errors: {} };
-  const [state, dispatch] = useFormState(createInvoice, initialState);
+  const [state, dispatch] = useFormState(createProduct, initialState);
   // console.log(state);
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div>Nuevo producto</div>
         <div className="mt-4 mb-4">
-          <label htmlFor="customer" className="mb-2 block text-sm font-medium">
+          <label htmlFor="name" className="mb-2 block text-sm font-medium">
             Nombre
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
-                id="amount"
-                name="amount"
-                type="number"
-                step="0.01"
+                id="name"
+                name="name"
+                type="text"
                 placeholder="Nombre del producto"
                 className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="amount-error"
+                aria-describedby="name-error"
               />
             </div>
-            {state.errors?.amount ? (
+            {state.errors?.name ? (
               <div
-                id="amount-error"
+                id="name-error"
                 aria-live="polite"
                 className="mt-2 text-sm text-red-500"
               >
-                {state.errors.amount.map((error: string) => (
+                {state.errors.name.map((error: string) => (
                   <p key={error}>{error}</p>
                 ))}
               </div>
@@ -203,28 +202,31 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="buy_price_dollar"
+            className="mb-2 block text-sm font-medium"
+          >
             Precio de compra
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
-                id="amount"
-                name="amount"
+                id="buy_price_dollar"
+                name="buy_price_dollar"
                 type="number"
                 step="0.01"
                 placeholder="Precio de compra"
                 className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="amount-error"
+                aria-describedby="buy_price_dollar-error"
               />
             </div>
-            {state.errors?.amount ? (
+            {state.errors?.buy_price_dollar ? (
               <div
-                id="amount-error"
+                id="buy_price_dollar-error"
                 aria-live="polite"
                 className="mt-2 text-sm text-red-500"
               >
-                {state.errors.amount.map((error: string) => (
+                {state.errors.buy_price_dollar.map((error: string) => (
                   <p key={error}>{error}</p>
                 ))}
               </div>
@@ -233,28 +235,28 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+          <label htmlFor="quantity" className="mb-2 block text-sm font-medium">
             Cantidad
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
-                id="amount"
-                name="amount"
+                id="quantity"
+                name="quantity"
                 type="number"
                 step="0.01"
                 placeholder="Cantidad"
                 className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="amount-error"
+                aria-describedby="quantity-error"
               />
             </div>
-            {state.errors?.amount ? (
+            {state.errors?.quantity ? (
               <div
                 id="amount-error"
                 aria-live="polite"
                 className="mt-2 text-sm text-red-500"
               >
-                {state.errors.amount.map((error: string) => (
+                {state.errors.quantity.map((error: string) => (
                   <p key={error}>{error}</p>
                 ))}
               </div>
@@ -263,28 +265,28 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+          <label htmlFor="revenue" className="mb-2 block text-sm font-medium">
             Ganancia %
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
-                id="amount"
-                name="amount"
+                id="revenue"
+                name="revenue"
                 type="number"
                 step="0.01"
                 placeholder="Ganancia"
                 className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
-                aria-describedby="amount-error"
+                aria-describedby="revenue-error"
               />
             </div>
-            {state.errors?.amount ? (
+            {state.errors?.revenue ? (
               <div
                 id="amount-error"
                 aria-live="polite"
                 className="mt-2 text-sm text-red-500"
               >
-                {state.errors.amount.map((error: string) => (
+                {state.errors.revenue.map((error: string) => (
                   <p key={error}>{error}</p>
                 ))}
               </div>
@@ -294,12 +296,12 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/invoices"
+          href="/dashboard"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
-          Cancel
+          Cancelar
         </Link>
-        <Button type="submit">Create Invoice</Button>
+        <Button type="submit">Añadir producto</Button>
       </div>
     </form>
   );

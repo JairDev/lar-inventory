@@ -28,6 +28,24 @@ const products = [
     revenue: 2,
     sellPrice: 1200,
   },
+  {
+    name: "Azúcar",
+    buyPriceDollar: 26,
+    buyPriceBs: 900000,
+    quantity: 24,
+    pvp: 44000,
+    revenue: 2,
+    sellPrice: 1200,
+  },
+  {
+    name: "Harina",
+    buyPriceDollar: 26,
+    buyPriceBs: 900000,
+    quantity: 24,
+    pvp: 44000,
+    revenue: 2,
+    sellPrice: 1200,
+  },
 ];
 
 const customers = [

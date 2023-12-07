@@ -13,21 +13,19 @@ async function seedProducts() {
     await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     const createTable = await sql`
     CREATE TABLE IF NOT EXISTS products (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       buy_price_dollar INT NOT NULL,
-      buy_price_bs INT NOT NULL,
       quantity INT NOT NULL,
-      pvp INT NOT NULL,
-      revenue INT NOT NULL,
-      sell_price INT NOT NULL
+      revenue INT NOT NULL
     )
     `;
     console.log(`Created "products" table`);
     const insertedProducts = await Promise.all(
       products.map(
         (product) => sql`
-      INSERT INTO products (name, buy_price_dollar, buy_price_bs , quantity, pvp, revenue, sell_price)
-      VALUES (${product.name}, ${product.buyPriceDollar}, ${product.buyPriceBs}, ${product.quantity}, ${product.pvp}, ${product.revenue}, ${product.sellPrice})
+      INSERT INTO products (name, buy_price_dollar, quantity, revenue)
+      VALUES (${product.name}, ${product.buyPriceDollar}, ${product.quantity}, ${product.revenue})
       ON CONFLICT (id) DO NOTHING;
       `
       )
@@ -39,6 +37,17 @@ async function seedProducts() {
     };
   } catch (error) {
     console.error("Error seeding products:", error);
+    throw error;
+  }
+}
+
+async function dropTable() {
+  try {
+    await sql`
+      DROP TABLE products
+    `;
+  } catch (error) {
+    console.error("Error drop products:", error);
     throw error;
   }
 }
@@ -202,4 +211,5 @@ async function seedRevenue() {
   // await seedInvoices();
   // await seedRevenue();
   await seedProducts();
+  // await dropTable();
 })();
