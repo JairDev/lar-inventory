@@ -16,6 +16,7 @@ import {
 } from "@/app/ui/skeletons";
 import Search from "@/app/ui/search";
 import Pagination from "@/app/ui/invoices/pagination";
+import { CreateProduct } from "@/app/ui/invoices/buttons";
 
 // ¿Qué es el renderizado estático?
 // Con la representación estática, la obtención y representación de datos se produce
@@ -112,14 +113,7 @@ export default async function Page({
             Productos
           </h3>
         </div>
-        <div className="mt-3 md:mt-0">
-          <a
-            href=""
-            className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm"
-          >
-            Añadir producto
-          </a>
-        </div>
+        <CreateProduct />
       </div>
       <div className="mt-12 relative h-max overflow-auto">
         <table className="w-full table-auto text-sm text-left">
