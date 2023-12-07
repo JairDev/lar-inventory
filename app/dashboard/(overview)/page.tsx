@@ -6,6 +6,7 @@ import {
   fetchRevenue,
   fetchLatestInvoices,
   fetchCardData,
+  fetchFilteredProducts,
 } from "@/app/lib/data";
 import { Suspense } from "react";
 import {
@@ -13,6 +14,8 @@ import {
   LatestInvoicesSkeleton,
   RevenueChartSkeleton,
 } from "@/app/ui/skeletons";
+import Search from "@/app/ui/search";
+import Pagination from "@/app/ui/invoices/pagination";
 
 // ¿Qué es el renderizado estático?
 // Con la representación estática, la obtención y representación de datos se produce
@@ -35,43 +38,137 @@ import {
 // a información que solo se puede conocer en el momento de la solicitud, como las cookies
 // o los parámetros de búsqueda de la URL.
 
-export default async function Page() {
-  // const revenue = await fetchRevenue();
-  // const latestInvoices = await fetchLatestInvoices();
-  const {
-    numberOfInvoices,
-    numberOfCustomers,
-    totalPaidInvoices,
-    totalPendingInvoices,
-  } = await fetchCardData();
+// export default async function Page() {
+//   // const revenue = await fetchRevenue();
+//   // const latestInvoices = await fetchLatestInvoices();
+//   const {
+//     numberOfInvoices,
+//     numberOfCustomers,
+//     totalPaidInvoices,
+//     totalPendingInvoices,
+//   } = await fetchCardData();
+//   return (
+//     <main>
+//       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+//         Dashboard
+//       </h1>
+//       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+//         {/* <Card title="Collected" value={totalPaidInvoices} type="collected" />
+//         <Card title="Pending" value={totalPendingInvoices} type="pending" />
+//         <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
+//         <Card
+//           title="Total Customers"
+//           value={numberOfCustomers}
+//           type="customers"
+//         /> */}
+//         <Suspense fallback={<CardsSkeleton />}>
+//           <Cards />
+//         </Suspense>
+//       </div>
+//       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+//         {/* <RevenueChart revenue={revenue} /> */}
+//         <Suspense fallback={<RevenueChartSkeleton />}>
+//           <RevenueChart />
+//         </Suspense>
+//         {/* <LatestInvoices latestInvoices={latestInvoices} /> */}
+//         <Suspense fallback={<LatestInvoicesSkeleton />}>
+//           <LatestInvoices />
+//         </Suspense>
+//       </div>
+//     </main>
+//   );
+// }
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  };
+}) {
+  const query = searchParams?.query || "";
+  const products = await fetchFilteredProducts(query);
+  console.log(products);
   return (
-    <main>
-      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        Dashboard
-      </h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {/* <Card title="Collected" value={totalPaidInvoices} type="collected" />
-        <Card title="Pending" value={totalPendingInvoices} type="pending" />
-        <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-        <Card
-          title="Total Customers"
-          value={numberOfCustomers}
-          type="customers"
-        /> */}
-        <Suspense fallback={<CardsSkeleton />}>
-          <Cards />
-        </Suspense>
+    <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+      <div className=" flex items-center justify-between gap-2 md:mt-8">
+        <Search placeholder="Buscar productos..." />
+        <div className="flex items-center gap-4">
+          <div>$ 38000</div>
+          <div className="mt-3 md:mt-0">
+            <a
+              href=""
+              className="inline-block border border-gray-200 px-4 py-2 text-indigo-500 duration-150 font-medium  rounded-lg hover:bg-gray-300 active:bg-indigo-700 md:text-sm"
+            >
+              Actualizar dólar
+            </a>
+          </div>
+        </div>
       </div>
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-        {/* <RevenueChart revenue={revenue} /> */}
-        <Suspense fallback={<RevenueChartSkeleton />}>
-          <RevenueChart />
-        </Suspense>
-        {/* <LatestInvoices latestInvoices={latestInvoices} /> */}
-        <Suspense fallback={<LatestInvoicesSkeleton />}>
-          <LatestInvoices />
-        </Suspense>
+      <div className="mt-14 items-start justify-between md:flex">
+        <div className="max-w-lg">
+          <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
+            Productos
+          </h3>
+        </div>
+        <div className="mt-3 md:mt-0">
+          <a
+            href=""
+            className="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm"
+          >
+            Añadir producto
+          </a>
+        </div>
       </div>
-    </main>
+      <div className="mt-12 relative h-max overflow-auto">
+        <table className="w-full table-auto text-sm text-left">
+          <thead className="text-gray-600 font-medium border-b">
+            <tr>
+              <th className="py-3 pr-6">Nombre / Bulto</th>
+              <th className="py-3 pr-6">P / Compra $</th>
+              <th className="py-3 pr-6">P / Compra Bs</th>
+              <th className="py-3 pr-6">Cantidad</th>
+              <th className="py-3 pr-6">PVP</th>
+              <th className="py-3 pr-6">% Ganancia</th>
+              <th className="py-3 pr-6">Precio de venta</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-600 divide-y">
+            {products.map((item, idx) => (
+              <tr key={idx}>
+                <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
+                <td className="pr-6 py-4 whitespace-nowrap">
+                  {item.buy_price_dollar}
+                </td>
+                <td className="pr-6 py-4 whitespace-nowrap">
+                  {item.buy_price_bs}
+                </td>
+                <td className="pr-6 py-4 whitespace-nowrap">{item.quantity}</td>
+                <td className="pr-6 py-4 whitespace-nowrap">{item.pvp}</td>
+                <td className="pr-6 py-4 whitespace-nowrap">{item.revenue}</td>
+                <td className="pr-6 py-4 whitespace-nowrap">
+                  {item.sell_price}
+                </td>
+                <td className="text-right px-6 whitespace-nowrap">
+                  <a
+                    href="javascript:void()"
+                    className="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg"
+                  >
+                    Edit
+                  </a>
+                  <button className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="mt-5 flex w-full justify-center">
+        <Pagination totalPages={5} />
+      </div>
+    </div>
   );
 }

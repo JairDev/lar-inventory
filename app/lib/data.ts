@@ -7,6 +7,7 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  ProductsTable,
 } from "./definitions";
 import { formatCurrency } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
@@ -128,6 +129,25 @@ export async function fetchFilteredInvoices(
     `;
 
     return invoices.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch invoices.");
+  }
+}
+
+export async function fetchFilteredProducts(query: string) {
+  noStore();
+  try {
+    const products = await sql<ProductsTable>`
+    SELECT 
+    *
+    FROM products
+    WHERE
+      products.name ILIKE ${`%${query}`} 
+   
+    `;
+    console.log(products.rows);
+    return products.rows;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch invoices.");
