@@ -1,9 +1,9 @@
 import { Revenue } from "./definitions";
 
 export const formatCurrency = (amount: number) => {
-  return (amount / 100).toLocaleString("en-US", {
+  return (amount / 100).toLocaleString("es-VE", {
     style: "currency",
-    currency: "USD",
+    currency: "VES",
   });
 };
 
@@ -77,6 +77,10 @@ export function getPvpPrice(
   currentDollarPrice: number,
   quantity: number
 ) {
+  const pvp = Number(
+    ((buyPriceDollar * currentDollarPrice) / quantity).toFixed(2)
+  );
+  const format = formatCurrency(pvp);
   return Number(((buyPriceDollar * currentDollarPrice) / quantity).toFixed(2));
 }
 
@@ -87,7 +91,12 @@ export function getSellPrice(
   revenue: number
 ) {
   const pvp = getPvpPrice(buyPriceDollar, currentDollarPrice, quantity);
-  console.log(pvp);
-  console.log(((buyPriceDollar * currentDollarPrice) / quantity) * revenue);
-  return ((buyPriceDollar * currentDollarPrice) / quantity) * revenue + pvp;
+  const revenueAmount = pvp * revenue;
+  const total = Number((revenueAmount + pvp).toFixed(2));
+  const format = formatCurrency(total);
+  // console.log(format);
+  // console.log(revenueAmount);
+  // console.log(pvp);
+  // console.log((buyPriceDollar * currentDollarPrice) / quantity);
+  return total;
 }

@@ -136,8 +136,12 @@ export async function fetchFilteredInvoices(
   }
 }
 
-export async function fetchFilteredProducts(query: string) {
+export async function fetchFilteredProducts(
+  query: string,
+  currentPage: number
+) {
   noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   try {
     const products = await sql<ProductsTable>`
     SELECT 
@@ -145,6 +149,7 @@ export async function fetchFilteredProducts(query: string) {
     FROM products
     WHERE
       products.name ILIKE ${`%${query}`} 
+    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
    
     `;
     // console.log(products.rows);
@@ -178,6 +183,23 @@ export async function fetchProductById(id: string) {
     return data.rows[0];
   } catch (error) {
     console.error("Database Error:", error);
+  }
+}
+
+export async function fetchProductsPages(query: string) {
+  noStore();
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM products
+    WHERE
+    products.name ILIKE ${`%${query}`} 
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch total number of invoices.");
   }
 }
 

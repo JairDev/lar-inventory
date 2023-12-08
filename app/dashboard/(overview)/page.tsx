@@ -7,6 +7,7 @@ import {
   fetchLatestInvoices,
   fetchCardData,
   fetchFilteredProducts,
+  fetchProductsPages,
 } from "@/app/lib/data";
 import { Suspense } from "react";
 import {
@@ -22,7 +23,12 @@ import {
   UpdateProduct,
 } from "@/app/ui/invoices/buttons";
 import { get } from "http";
-import { getBsPrice, getPvpPrice, getSellPrice } from "@/app/lib/utils";
+import {
+  formatCurrency,
+  getBsPrice,
+  getPvpPrice,
+  getSellPrice,
+} from "@/app/lib/utils";
 
 // ¿Qué es el renderizado estático?
 // Con la representación estática, la obtención y representación de datos se produce
@@ -95,8 +101,11 @@ export default async function Page({
   };
 }) {
   const query = searchParams?.query || "";
-  const products = await fetchFilteredProducts(query);
-  console.log(products);
+
+  const currentPage = Number(searchParams?.page) || 1;
+  const products = await fetchFilteredProducts(query, currentPage);
+  const totalPages = await fetchProductsPages(query);
+  // console.log(totalPages);
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
       <div className=" flex items-center justify-between gap-2 md:mt-8">
@@ -146,15 +155,19 @@ export default async function Page({
                 </td>
                 <td className="pr-6 py-4 whitespace-nowrap">{item.quantity}</td>
                 <td className="pr-6 py-4 whitespace-nowrap">
-                  {getPvpPrice(item.buy_price_dollar, 38000, item.quantity)}
+                  {formatCurrency(
+                    getPvpPrice(item.buy_price_dollar, 38000, item.quantity)
+                  )}
                 </td>
                 <td className="pr-6 py-4 whitespace-nowrap">{item.revenue}</td>
                 <td className="pr-6 py-4 whitespace-nowrap">
-                  {getSellPrice(
-                    item.buy_price_dollar,
-                    38000,
-                    item.quantity,
-                    item.revenue
+                  {formatCurrency(
+                    getSellPrice(
+                      item.buy_price_dollar,
+                      38000,
+                      item.quantity,
+                      item.revenue
+                    )
                   )}
                 </td>
                 <td className="px-6 py-4  flex gap-2">
@@ -167,7 +180,7 @@ export default async function Page({
         </table>
       </div>
       <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={5} />
+        <Pagination totalPages={totalPages} />
       </div>
     </div>
   );

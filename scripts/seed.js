@@ -6,23 +6,26 @@ const {
   users,
   products,
 } = require("../app/lib/placeholder-data.js");
+
+const { productsLar } = require("../app/lib/lar-inventario.js");
 const bcrypt = require("bcrypt");
 
 async function seedProducts() {
+  // console.log(productsLar.length);
   try {
     await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     const createTable = await sql`
     CREATE TABLE IF NOT EXISTS products (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
-      buy_price_dollar INT NOT NULL,
+      buy_price_dollar DECIMAL(10,2) NOT NULL,
       quantity INT NOT NULL,
       revenue DECIMAL(10,2) NOT NULL
     )
     `;
     console.log(`Created "products" table`);
     const insertedProducts = await Promise.all(
-      products.map(
+      productsLar.slice(400).map(
         (product) => sql`
       INSERT INTO products (name, buy_price_dollar, quantity, revenue)
       VALUES (${product.name}, ${product.buyPriceDollar}, ${product.quantity}, ${product.revenue})
@@ -210,6 +213,6 @@ async function seedRevenue() {
   // await seedCustomers();
   // await seedInvoices();
   // await seedRevenue();
-  await seedProducts();
+  // await seedProducts();
   // await dropTable();
 })();
