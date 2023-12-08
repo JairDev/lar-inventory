@@ -147,7 +147,7 @@ export async function fetchFilteredProducts(query: string) {
       products.name ILIKE ${`%${query}`} 
    
     `;
-    console.log(products.rows);
+    // console.log(products.rows);
     return products.rows;
   } catch (error) {
     console.error("Database Error:", error);

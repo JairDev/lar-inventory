@@ -17,7 +17,7 @@ async function seedProducts() {
       name VARCHAR(255) NOT NULL,
       buy_price_dollar INT NOT NULL,
       quantity INT NOT NULL,
-      revenue INT NOT NULL
+      revenue DECIMAL(10,2) NOT NULL
     )
     `;
     console.log(`Created "products" table`);

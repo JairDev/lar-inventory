@@ -16,7 +16,13 @@ import {
 } from "@/app/ui/skeletons";
 import Search from "@/app/ui/search";
 import Pagination from "@/app/ui/invoices/pagination";
-import { CreateProduct, UpdateProduct } from "@/app/ui/invoices/buttons";
+import {
+  CreateProduct,
+  DeleteProduct,
+  UpdateProduct,
+} from "@/app/ui/invoices/buttons";
+import { get } from "http";
+import { getBsPrice, getPvpPrice, getSellPrice } from "@/app/lib/utils";
 
 // ¿Qué es el renderizado estático?
 // Con la representación estática, la obtención y representación de datos se produce
@@ -136,21 +142,24 @@ export default async function Page({
                   {item.buy_price_dollar}
                 </td>
                 <td className="pr-6 py-4 whitespace-nowrap">
-                  {item.buy_price_dollar * 38000}
+                  {getBsPrice(item.buy_price_dollar, 38000)}
                 </td>
                 <td className="pr-6 py-4 whitespace-nowrap">{item.quantity}</td>
                 <td className="pr-6 py-4 whitespace-nowrap">
-                  {(item.buy_price_dollar * 38000) / item.quantity}
+                  {getPvpPrice(item.buy_price_dollar, 38000, item.quantity)}
                 </td>
                 <td className="pr-6 py-4 whitespace-nowrap">{item.revenue}</td>
                 <td className="pr-6 py-4 whitespace-nowrap">
-                  {((item.buy_price_dollar * 38000) / item.quantity) * 0.2}
+                  {getSellPrice(
+                    item.buy_price_dollar,
+                    38000,
+                    item.quantity,
+                    item.revenue
+                  )}
                 </td>
-                <td className="text-right px-6 whitespace-nowrap">
+                <td className="px-6 py-4  flex gap-2">
                   <UpdateProduct id={item.id} />
-                  <button className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg">
-                    Delete
-                  </button>
+                  <DeleteProduct id={item.id} />
                 </td>
               </tr>
             ))}
