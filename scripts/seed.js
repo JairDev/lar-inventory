@@ -10,6 +10,32 @@ const {
 const { productsLar } = require("../app/lib/lar-inventario.js");
 const bcrypt = require("bcrypt");
 
+async function seedDollar() {
+  try {
+    await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    const createTable = await sql`
+    CREATE TABLE IF NOT EXISTS dollar (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      current_price DECIMAL(10,2) NOT NULL
+    )
+    `;
+    console.log(`Created "dollar" table`);
+    const insertedDollar = await sql`
+      INSERT INTO dollar (current_price)
+      VALUES (38000.00)
+      ON CONFLICT (id) DO NOTHING;
+    `;
+    console.log(`Seeded dollar`);
+    return {
+      createTable,
+      dollar: insertedDollar,
+    };
+  } catch (error) {
+    console.error("Error seeding dollar:", error);
+    throw error;
+  }
+}
+
 async function seedProducts() {
   // console.log(productsLar.length);
   try {
@@ -25,7 +51,7 @@ async function seedProducts() {
     `;
     console.log(`Created "products" table`);
     const insertedProducts = await Promise.all(
-      productsLar.slice(400).map(
+      productsLar.slice().map(
         (product) => sql`
       INSERT INTO products (name, buy_price_dollar, quantity, revenue)
       VALUES (${product.name}, ${product.buyPriceDollar}, ${product.quantity}, ${product.revenue})
@@ -215,4 +241,5 @@ async function seedRevenue() {
   // await seedRevenue();
   // await seedProducts();
   // await dropTable();
+  // await seedDollar();
 })();

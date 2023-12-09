@@ -9,6 +9,7 @@ import {
   Revenue,
   ProductsTable,
   ProductForm,
+  DollarForm,
 } from "./definitions";
 import { formatCurrency } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
@@ -136,6 +137,23 @@ export async function fetchFilteredInvoices(
   }
 }
 
+export async function fetchDollarPrice() {
+  noStore();
+  try {
+    const data = await sql<DollarForm>`
+      SELECT 
+        dollar.id,
+        dollar.current_price
+      FROM dollar
+    `;
+    // console.log(data.rows[0]);
+    return data.rows[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch dollar price.");
+  }
+}
+
 export async function fetchFilteredProducts(
   query: string,
   currentPage: number
@@ -148,7 +166,7 @@ export async function fetchFilteredProducts(
     *
     FROM products
     WHERE
-      products.name ILIKE ${`%${query}`} 
+    products.name ILIKE ${`%${query}`} 
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
    
     `;

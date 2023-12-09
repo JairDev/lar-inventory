@@ -1,13 +1,12 @@
-import { GlobeAltIcon } from "@heroicons/react/24/outline";
-import { lusitana } from "@/app/ui/fonts";
+import larLogo from "@/public/lar-logov2.png";
+import Image from "next/image";
 
 export default function AcmeLogo() {
   return (
-    <div
-      className={`${lusitana.className} flex flex-row items-center leading-none text-white`}
-    >
-      {/* <GlobeAltIcon className="h-12 w-12 rotate-[15deg]" /> */}
-      <p className="text-[44px]">LaR</p>
+    <div className={`p-1 flex flex-row items-center leading-none`}>
+      <div className="">
+        <Image src={larLogo} alt="Logotipo" width={150} height={150} />
+      </div>
     </div>
   );
 }

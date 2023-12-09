@@ -112,3 +112,8 @@ export type ProductForm = {
   quantity: number;
   revenue: number;
 };
+
+export type DollarForm = {
+  id: string;
+  current_price: number;
+};

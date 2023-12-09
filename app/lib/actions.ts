@@ -34,9 +34,17 @@ const ProductSchema = z.object({
     .gt(0, { message: "Please enter an amount greater than $0." }),
 });
 
+const DollarSchema = z.object({
+  id: z.string(),
+  current_price: z.coerce
+    .number()
+    .gt(0, { message: "Please enter an amount greater than $0." }),
+});
+
 const CreateInvoice = InvoiceSchema.omit({ id: true, date: true });
 const UpdateInvoice = InvoiceSchema.omit({ date: true });
 const CreateProduct = ProductSchema.omit({ id: true });
+const UpdateDollar = DollarSchema.omit({ id: true });
 
 export type State = {
   errors?: {
@@ -53,6 +61,13 @@ export type StateProduct = {
     buy_price_dollar?: string[];
     quantity?: string[];
     revenue?: string[];
+  };
+  message?: string | null;
+};
+
+export type StateDollarPrice = {
+  errors?: {
+    current_price?: string[];
   };
   message?: string | null;
 };
@@ -117,6 +132,36 @@ export async function createProduct(
   }
   revalidatePath("/dashboard");
   redirect("/dashboard");
+}
+
+export async function updateDollarPrice(
+  id: string,
+  prevState: StateDollarPrice,
+  formData: FormData
+) {
+  console.log(id);
+  const validatedFields = UpdateDollar.safeParse({
+    current_price: formData.get("current_price"),
+  });
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Update price.",
+    };
+  }
+  const { current_price } = validatedFields.data;
+  console.log(id);
+  try {
+    await sql`
+      UPDATE dollar
+      SET current_price = ${current_price}
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    return { message: "Database Error: Failed to Update dollar price." };
+  }
+
+  revalidatePath("/dashboard");
 }
 
 export async function updateProduct(
