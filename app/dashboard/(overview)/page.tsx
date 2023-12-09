@@ -24,14 +24,6 @@ export default async function Page({
       <div className=" flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Buscar productos..." />
         <DollarPrice />
-        {/* <div className="flex items-center gap-4">
-          <div>$ 38000</div>
-          <div className="mt-3 md:mt-0">
-            <div className="inline-block border border-gray-200 px-4 py-2 text-green-950 duration-150 font-medium  rounded-lg hover:bg-green-100 active:bg-indigo-700 md:text-sm">
-              Actualizar dólar
-            </div>
-          </div>
-        </div> */}
       </div>
       <div className="mt-14 items-start justify-between md:flex">
         <div className="max-w-lg">
