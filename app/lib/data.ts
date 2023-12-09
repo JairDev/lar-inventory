@@ -166,7 +166,7 @@ export async function fetchFilteredProducts(
     *
     FROM products
     WHERE
-    products.name ILIKE ${`%${query}`} 
+    products.name ILIKE ${`%${query}%`} 
     LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
    
     `;
@@ -210,7 +210,7 @@ export async function fetchProductsPages(query: string) {
     const count = await sql`SELECT COUNT(*)
     FROM products
     WHERE
-    products.name ILIKE ${`%${query}`} 
+    products.name ILIKE ${`%${query}%`} 
   `;
 
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
