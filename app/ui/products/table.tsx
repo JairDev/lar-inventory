@@ -1,6 +1,6 @@
 import { fetchDollarPrice, fetchFilteredProducts } from "@/app/lib/data";
 import {
-  formatCurrency,
+  // formatCurrency,
   getBsPrice,
   getPvpPrice,
   getSellPrice,
