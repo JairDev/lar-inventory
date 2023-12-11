@@ -5,6 +5,7 @@ import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
+import { unstable_noStore as noStore } from "next/cache";
 
 const ProductSchema = z.object({
   id: z.string(),
@@ -24,7 +25,7 @@ const DollarSchema = z.object({
   id: z.string(),
   current_price: z.coerce
     .number()
-    .gt(0, { message: "Please enter an amount greater than $0." }),
+    .gt(0, { message: "Por favor, introduce un número mayor a 0." }),
 });
 
 const CreateProduct = ProductSchema.omit({ id: true });
@@ -64,7 +65,7 @@ export async function createProduct(
     };
   }
   const { name, buy_price_dollar, quantity, revenue } = validatedFields.data;
-  console.log(name, buy_price_dollar, quantity, revenue);
+  // console.log(name, buy_price_dollar, quantity, revenue);
   try {
     await sql`
       INSERT INTO products (name, buy_price_dollar, quantity, revenue)
@@ -81,10 +82,10 @@ export async function createProduct(
 
 export async function updateDollarPrice(
   id: string,
-  prevState: StateDollarPrice,
+  prevState,
   formData: FormData
 ) {
-  console.log(id);
+  noStore();
   const validatedFields = UpdateDollar.safeParse({
     current_price: formData.get("current_price"),
   });
@@ -94,14 +95,15 @@ export async function updateDollarPrice(
       message: "Missing Fields. Failed to Update price.",
     };
   }
+
   const { current_price } = validatedFields.data;
-  console.log(id);
   try {
     await sql`
       UPDATE dollar
       SET current_price = ${current_price}
-      WHERE id = ${id}
+      WHERE id = ${id};
     `;
+    // return { message: "Success: Precio actualizado." };
   } catch (error) {
     return { message: "Database Error: Failed to Update dollar price." };
   }

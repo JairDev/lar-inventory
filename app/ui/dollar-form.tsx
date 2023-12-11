@@ -3,7 +3,6 @@
 import { useFormState } from "react-dom";
 import { updateDollarPrice } from "../lib/actions";
 import { DollarForm } from "../lib/definitions";
-import { Button } from "./button";
 import { useRef } from "react";
 
 // I was expecting (state: StateDollarPrice, payload: FormData) =>
@@ -27,29 +26,33 @@ export default function DollarForm({ dollar }: { dollar: DollarForm }) {
   const initialState = { message: null, errors: {} };
   const updateDollarWithId = updateDollarPrice.bind(null, dollar.id);
   const [state, dispatch] = useFormState(updateDollarWithId, initialState);
-  const contentFormRef = useRef(null);
+  const contentFormRef = useRef<HTMLInputElement>(null);
   // console.log("state", state);
-  const handleVisibility = (e) => {
+  const handleVisibility = () => {
     // console.log(e.target);
-    contentFormRef.current.classList.toggle("hidden");
+    if (contentFormRef.current != null) {
+      contentFormRef.current.classList.toggle("hidden");
+    }
   };
 
-  const handleClose = (e) => {
+  const handleClose = () => {
     // console.log(e.target);
-    contentFormRef.current.classList.add("hidden");
+    if (contentFormRef.current != null) {
+      contentFormRef.current.classList.add("hidden");
+    }
   };
   return (
     <div className="mt-3 md:mt-0 relative">
       <div
         onClick={handleVisibility}
-        className="inline-block border border-gray-200 cursor-pointer px-4 py-2 text-green-950 duration-150 font-medium   rounded-lg hover:bg-green-100 active:bg-indigo-700 md:text-sm"
+        className="inline-block border border-gray-200 cursor-pointer px-4 py-2 text-green-950 duration-150 font-medium  rounded-lg hover:bg-green-100 active:bg-green-700 md:text-sm"
       >
         Actualizar dólar
       </div>
 
       <div
         ref={contentFormRef}
-        className="border border-gray-200 absolute top-14 right-0 bg-white p-4 z-30 hidden"
+        className="border border-gray-200 absolute top-14 right-0 bg-white p-4 z-30 hidden min-w-[250px]"
       >
         <form action={dispatch}>
           <div className="flex flex-col items-center">
@@ -72,22 +75,22 @@ export default function DollarForm({ dollar }: { dollar: DollarForm }) {
               aria-describedby="current_price-error"
             />
           </div>
-          {/* {state.errors?.current_price ? (
-        <div
-          id="current_price-error"
-          aria-live="polite"
-          className="mt-2 text-sm text-red-500"
-        >
-          {state.errors.current_price.map((error: string) => (
-            <p key={error}>{error}</p>
-          ))}
-        </div>
-      ) : null} */}
-          <div className="flex gap-4 mt-4">
-            <button className="border border-gray-200 px-4 py-2 rounded-lg">
-              Cancelar
-            </button>
-            <button type="submit" className="bg-green-600 px-4 py-2 rounded-lg">
+          {state?.errors?.current_price ? (
+            <div
+              id="current_price-error"
+              aria-live="polite"
+              className="mt-2 text-sm text-red-500"
+            >
+              {state.errors.current_price.map((error: string) => (
+                <p key={error}>{error}</p>
+              ))}
+            </div>
+          ) : null}
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              type="submit"
+              className="bg-green-600 px-4 py-2 rounded-lg text-white"
+            >
               Actualizar
             </button>
           </div>

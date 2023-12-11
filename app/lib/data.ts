@@ -9,7 +9,7 @@ import { unstable_noStore as noStore } from "next/cache";
 // estable en sus propios proyectos, también puede utilizar la opción Configuración de
 // segmento .unstable_noStoreexport const dynamic = "force-dynamic"
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 
 export async function fetchDollarPrice() {
   noStore();

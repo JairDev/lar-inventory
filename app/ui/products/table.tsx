@@ -41,23 +41,19 @@ export default async function ProductsTable({
             </td>
             <td className="pr-6 py-4 whitespace-nowrap">{item.quantity}</td>
             <td className="pr-6 py-4 whitespace-nowrap">
-              {formatCurrency(
-                getPvpPrice(
-                  item.buy_price_dollar,
-                  dollarPrice?.current_price,
-                  item.quantity
-                )
+              {getPvpPrice(
+                item.buy_price_dollar,
+                dollarPrice?.current_price,
+                item.quantity
               )}
             </td>
             <td className="pr-6 py-4 whitespace-nowrap">{item.revenue}</td>
             <td className="pr-6 py-4 whitespace-nowrap">
-              {formatCurrency(
-                getSellPrice(
-                  item.buy_price_dollar,
-                  dollarPrice?.current_price,
-                  item.quantity,
-                  item.revenue
-                )
+              {getSellPrice(
+                item.buy_price_dollar,
+                dollarPrice?.current_price,
+                item.quantity,
+                item.revenue
               )}
             </td>
             <td className="px-6 py-4  flex gap-2">
