@@ -48,6 +48,9 @@ export type StateDollarPrice = {
   message?: string | null;
 };
 
+// (prevState: string, formData: FormData) => Promise<{ errors: { current_price?: string[] | undefined; };
+// message: string; } | { message: string; errors?: undefined; } | undefined>
+
 export async function createProduct(
   prevState: StateProduct,
   formData: FormData
@@ -82,7 +85,7 @@ export async function createProduct(
 
 export async function updateDollarPrice(
   id: string,
-  prevState,
+  prevState: StateDollarPrice,
   formData: FormData
 ) {
   noStore();

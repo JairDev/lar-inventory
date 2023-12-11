@@ -25,6 +25,8 @@ import { useRef } from "react";
 export default function DollarForm({ dollar }: { dollar: DollarForm }) {
   const initialState = { message: null, errors: {} };
   const updateDollarWithId = updateDollarPrice.bind(null, dollar.id);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   const [state, dispatch] = useFormState(updateDollarWithId, initialState);
   const contentFormRef = useRef<HTMLInputElement>(null);
   // console.log("state", state);
