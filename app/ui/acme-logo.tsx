@@ -5,7 +5,7 @@ export default function AcmeLogo() {
   return (
     <div className={`p-1 flex flex-row items-center leading-none`}>
       <div className="">
-        <Image src={larLogo} alt="Logotipo" width={150} height={150} />
+        <Image src={larLogo} alt="Logotipo" width={115} height={115} />
       </div>
     </div>
   );

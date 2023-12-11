@@ -6,6 +6,7 @@ import { CreateProduct } from "@/app/ui/invoices/buttons";
 
 import ProductsTable from "@/app/ui/products/table";
 import DollarPrice from "@/app/ui/dollarPrice";
+import clsx from "clsx";
 
 export default async function Page({
   searchParams,
@@ -27,7 +28,12 @@ export default async function Page({
       </div>
       <div className="mt-14 items-start justify-between md:flex">
         <div className="max-w-lg">
-          <h3 className="text-gray-800 text-xl font-bold sm:text-2xl">
+          <h3
+            className={clsx(
+              lusitana.className,
+              "text-gray-800 text-xl font-bold sm:text-2xl"
+            )}
+          >
             Productos
           </h3>
         </div>
