@@ -1,7 +1,14 @@
 export const formatCurrency = (amount: number) => {
-  return (amount / 100).toLocaleString("es-VE", {
+  return amount.toLocaleString("es-VE", {
     style: "currency",
     currency: "VES",
+  });
+};
+
+export const formatDollarCurrency = (amount: number) => {
+  return amount.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
   });
 };
 
@@ -54,6 +61,11 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 
 export function getBsPrice(buyPriceDollar: number, currentDollarPrice: number) {
   return buyPriceDollar * currentDollarPrice;
+}
+export function getDollarPrice(pvp: number, currentDollarPrice: number) {
+  const amount = pvp / currentDollarPrice;
+  const format = formatDollarCurrency(amount);
+  return format;
 }
 
 export function getPvpPrice(
