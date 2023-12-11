@@ -61,10 +61,10 @@ export function getPvpPrice(
   currentDollarPrice: number,
   quantity: number
 ) {
-  const pvp = Number(
-    ((buyPriceDollar * currentDollarPrice) / quantity).toFixed(2)
-  );
-  const format = formatCurrency(pvp);
+  // const pvp = Number(
+  //   ((buyPriceDollar * currentDollarPrice) / quantity).toFixed(2)
+  // );
+  // const format = formatCurrency(pvp);
   return Number(((buyPriceDollar * currentDollarPrice) / quantity).toFixed(2));
 }
 
@@ -77,7 +77,7 @@ export function getSellPrice(
   const pvp = getPvpPrice(buyPriceDollar, currentDollarPrice, quantity);
   const revenueAmount = pvp * revenue;
   const total = Number((revenueAmount + pvp).toFixed(2));
-  const format = formatCurrency(total);
+  // const format = formatCurrency(total);
   // console.log(format);
   // console.log(revenueAmount);
   // console.log(pvp);
