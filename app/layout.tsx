@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     template: "%s | Lar Market",
     default: "Lar Market",
   },
+  icons: {
+    icon: "/icon.png",
+  },
   description: "Sistema de inventario.",
 };
 
@@ -17,6 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <link rel="icon" href="/icon.png" sizes="any" />
       <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
