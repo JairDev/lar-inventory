@@ -1,8 +1,8 @@
 import { lusitana } from "@/app/ui/fonts";
 import { fetchProductsPages } from "@/app/lib/data";
 import Search from "@/app/ui/search";
-import Pagination from "@/app/ui/invoices/pagination";
-import { CreateProduct } from "@/app/ui/invoices/buttons";
+import Pagination from "@/app/ui/products/pagination";
+import { CreateProduct } from "@/app/ui/products/buttons";
 
 import ProductsTable from "@/app/ui/products/table";
 import DollarPrice from "@/app/ui/dollarPrice";

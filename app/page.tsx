@@ -1,4 +1,4 @@
-import AcmeLogo from "@/app/ui/acme-logo";
+import AcmeLogo from "@/app/ui/lar-logo";
 import { lusitana } from "@/app/ui/fonts";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 import larLogo from "@/public/lar-logov2.png";
 import Image from "next/image";
 
-export default function AcmeLogo() {
+export default function LarLogo() {
   return (
     <div className={`p-1 flex flex-row items-center leading-none`}>
       <div className="">

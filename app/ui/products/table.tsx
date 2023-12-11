@@ -5,7 +5,7 @@ import {
   getPvpPrice,
   getSellPrice,
 } from "@/app/lib/utils";
-import { DeleteProduct, UpdateProduct } from "../invoices/buttons";
+import { DeleteProduct, UpdateProduct } from "./buttons";
 
 export default async function ProductsTable({
   query,
