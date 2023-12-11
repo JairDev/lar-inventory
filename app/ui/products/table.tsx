@@ -1,7 +1,8 @@
 import { fetchDollarPrice, fetchFilteredProducts } from "@/app/lib/data";
 import {
-  // formatCurrency,
+  formatCurrency,
   getBsPrice,
+  getDollarPrice,
   getPvpPrice,
   getSellPrice,
 } from "@/app/lib/utils";
@@ -21,18 +22,40 @@ export default async function ProductsTable({
       <thead className="text-gray-600 font-medium border-b">
         <tr>
           <th className="py-3 pr-6">Nombre / Bulto</th>
+          <th className="py-3 pr-6">P / Venta Bs</th>
+          <th className="py-3 pr-6">P / Venta $</th>
           <th className="py-3 pr-6">P / Compra $</th>
           <th className="py-3 pr-6">P / Compra Bs</th>
           <th className="py-3 pr-6">Cantidad</th>
           <th className="py-3 pr-6">PVP</th>
           <th className="py-3 pr-6">% Ganancia</th>
-          <th className="py-3 pr-6">Precio de venta</th>
         </tr>
       </thead>
       <tbody className="text-gray-600 divide-y">
         {products.map((item, idx) => (
           <tr key={idx}>
             <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
+            <td className="pr-6 py-4 whitespace-nowrap">
+              {formatCurrency(
+                getSellPrice(
+                  item.buy_price_dollar,
+                  dollarPrice?.current_price,
+                  item.quantity,
+                  item.revenue
+                )
+              )}
+            </td>
+            <td>
+              {getDollarPrice(
+                getSellPrice(
+                  item.buy_price_dollar,
+                  dollarPrice?.current_price,
+                  item.quantity,
+                  item.revenue
+                ),
+                dollarPrice?.current_price
+              )}
+            </td>
             <td className="pr-6 py-4 whitespace-nowrap">
               {item.buy_price_dollar}
             </td>
@@ -48,14 +71,6 @@ export default async function ProductsTable({
               )}
             </td>
             <td className="pr-6 py-4 whitespace-nowrap">{item.revenue}</td>
-            <td className="pr-6 py-4 whitespace-nowrap">
-              {getSellPrice(
-                item.buy_price_dollar,
-                dollarPrice?.current_price,
-                item.quantity,
-                item.revenue
-              )}
-            </td>
             <td className="px-6 py-4  flex gap-2">
               <UpdateProduct id={item.id} />
               <DeleteProduct id={item.id} />
