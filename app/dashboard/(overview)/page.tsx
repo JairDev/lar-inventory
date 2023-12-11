@@ -22,7 +22,7 @@ export default async function Page({
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-8">
-      <div className=" flex items-center justify-between gap-2 md:mt-8">
+      <div className="flex flex-col items-center justify-between gap-2 md:mt-8 md:flex-row">
         <Search placeholder="Buscar productos..." />
         <DollarPrice />
       </div>
