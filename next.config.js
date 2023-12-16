@@ -1,4 +1,25 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
 
-module.exports = nextConfig;
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+  disable: false,
+  cacheOnFrontendNav: true,
+  aggressiveFrontEndNavCaching: true,
+  cacheStartUrl: true,
+  dynamicStartUrl: true,
+  dynamicStartUrlRedirect: true,
+  reloadOnOnline: true,
+  swcMinify: true,
+  workboxOptions: {
+    disableDevLogs: true,
+    runtimeCaching: [200, 302],
+  },
+});
+
+const nextConfig = {
+  experimental: {
+    webpackBuildWorker: true,
+  },
+};
+
+module.exports = withPWA(nextConfig);
