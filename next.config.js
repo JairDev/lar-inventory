@@ -12,11 +12,6 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   swcMinify: true,
   workboxOptions: {
     disableDevLogs: true,
-    runtimeCaching: {
-      cacheableResponse: {
-        statuses: [200, 302],
-      },
-    },
   },
 });
 
